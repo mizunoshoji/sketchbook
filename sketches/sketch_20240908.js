@@ -8,15 +8,17 @@ function setup() {
   // 描画領域の幅と高さのうち長い方の1/3を円の半径として使用
   let maxRadius = max(width, height) / 3;
 
-  stroke(0); // 線の色を黒に設定
+  stroke(71, 73, 148);
   strokeWeight(2);
-  noFill(); // 塗りつぶしを無効化
+  fill(189, 180, 205, 100);
 
-  textSize(6); // テキストの表示サイズを8pxに設定
+  textSize(8); // テキストの表示サイズを8pxに設定
   textAlign(LEFT); // テキストを左揃えに設定
 
+  let numShapes = windowWidth <= 600 ? 60 : 100;
+
   // ランダムな位置に100個のシェイプを描画（指定した円の範囲内）
-  for (let j = 0; j < 100; j++) {
+  for (let j = 0; j < numShapes; j++) {
     push();
 
     // 円の範囲内でランダムな位置を生成
@@ -67,28 +69,28 @@ function setup() {
       // 色分けして各点を表示
       noStroke();
 
-      // 始点: 黒 + 座標表示
-      fill(0);
+      // 始点: rgb(68, 0, 204) + 座標表示
+      fill(68, 0, 204);
       ellipse(startX, startY, 6, 6);
       text(`(${round(startX)}, ${round(startY)})`, startX + 5, startY - 5);
 
-      // 制御点1: 赤 + 座標表示
-      fill(255, 0, 0);
+      // 制御点1: rgb(169, 0, 255) + 座標表示
+      fill(169, 0, 255);
       ellipse(cx1, cy1, 6, 6);
       text(`(${round(cx1)}, ${round(cy1)})`, cx1 + 5, cy1 - 5);
 
       // 制御点2: 緑 + 座標表示
-      fill(0, 255, 0);
+      fill(79, 112, 32);
       ellipse(cx2, cy2, 6, 6);
       text(`(${round(cx2)}, ${round(cy2)})`, cx2 + 5, cy2 - 5);
 
-      // 終点: 青 + 座標表示
-      fill(0, 0, 255);
+      // 終点: rgb(108, 0, 204) + 座標表示
+      fill(108, 0, 204);
       ellipse(x2, y2, 6, 6);
       text(`(${round(x2)}, ${round(y2)})`, x2 + 5, y2 - 5);
 
-      // 2つ目の制御点1: 赤 + 座標表示
-      fill(255, 0, 0);
+      // 2つ目の制御点1: rgb(171, 0, 137) + 座標表示
+      fill(171, 0, 137);
       ellipse(cx3, cy3, 6, 6);
       text(`(${round(cx3)}, ${round(cy3)})`, cx3 + 5, cy3 - 5);
 
@@ -97,8 +99,8 @@ function setup() {
       ellipse(cx4, cy4, 6, 6);
       text(`(${round(cx4)}, ${round(cy4)})`, cx4 + 5, cy4 - 5);
 
-      // 2つ目の終点: 青 + 座標表示
-      fill(0, 0, 255);
+      // 2つ目の終点: rgb(3, 77, 204) + 座標表示
+      fill(3, 77, 204);
       ellipse(x3, y3, 6, 6);
       text(`(${round(x3)}, ${round(y3)})`, x3 + 5, y3 - 5);
 
