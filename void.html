@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sketch</title>
+    <script src="js/p5.min.js"></script>
+  </head>
+  <body>
+    <script>
+      // クエリパラメータからスケッチファイルを取得
+      const urlParams = new URLSearchParams(window.location.search);
+      const sketchFile = urlParams.get("sketch");
+
+      // スケッチファイルを動的に読み込む
+      const script = document.createElement("script");
+      script.src = `sketches/${sketchFile}`;
+      document.body.appendChild(script);
+    </script>
+  </body>
+</html>
