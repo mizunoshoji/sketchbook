@@ -2,7 +2,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   background(255);
 
-  let radius = windowWidth <= 600 ? 30 : 60; // 円の半径。画面幅が600px以下ならシェイプを小さくする
+  let radius = windowWidth <= 600 ? 30 : 40; // 円の半径。画面幅が600px以下ならシェイプを小さくする
   let controlOffset = radius * 0.5; // 丸みを調整するための制御点のオフセット
 
   // 描画領域の幅と高さのうち長い方の1/3を円の半径として使用
@@ -15,7 +15,7 @@ function setup() {
   textSize(8); // テキストの表示サイズを8pxに設定
   textAlign(LEFT); // テキストを左揃えに設定
 
-  let numShapes = windowWidth <= 600 ? 60 : 100;
+  let numShapes = windowWidth <= 600 ? 60 : 200;
 
   // ランダムな位置に100個のシェイプを描画（指定した円の範囲内）
   for (let j = 0; j < numShapes; j++) {
