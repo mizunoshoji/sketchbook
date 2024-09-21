@@ -26,22 +26,27 @@ document.addEventListener("DOMContentLoaded", () => {
     textElement.innerHTML = ""; // テキストをリセット
     cursorElement.style.display = "inline"; // カーソルを再表示
 
-    function showText() {
-      if (index < fullText.length) {
-        textElement.innerHTML += fullText[index]; // 1文字ずつ追加
-        index++;
-        setTimeout(showText, 150); // 文字が表示される速度
-      } else {
-        cursorElement.style.display = "none"; // 最後の文字が入力された後にカーソルを消す
+    // まずカーソルを2秒間表示してから文字を入力
+    setTimeout(() => {
+      function showText() {
+        if (index < fullText.length) {
+          textElement.innerHTML += fullText[index]; // 1文字ずつ追加
+          index++;
+          setTimeout(showText, 150); // 文字が表示される速度
+        } else {
+          cursorElement.style.display = "none"; // 最後の文字が入力された後にカーソルを消す
+        }
       }
-    }
 
-    showText();
+      showText(); // 文字入力を開始
+    }, 2000); // 2秒待機してから文字入力を開始
   }
 
   // 初回実行
-  setTimeout(typeText, 1000); // 1秒後に最初のアニメーション開始
+  typeText();
 
-  // 5秒ごとにループして実行
-  setInterval(typeText, 5000);
+  // ループして2秒待ってから次のアニメーションを開始
+  setInterval(() => {
+    typeText(); // 文字入力を繰り返し実行
+  }, 7000); // 全体のサイクルを管理 (5秒でアニメーション + 2秒の待機)
 });
