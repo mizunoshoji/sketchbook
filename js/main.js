@@ -6,8 +6,13 @@ document.addEventListener("DOMContentLoaded", () => {
     .then((sketches) => {
       sketches.forEach((sketch) => {
         const link = document.createElement("a");
-        // sketch_template.htmlにクエリパラメータとしてファイル名を渡す
-        link.href = `void.html?sketch=${sketch.file}`;
+
+        // p5.jsのバージョンに応じてvoid.htmlを切り替える
+        const version =
+          sketch.p5jsversion === "1.6.x" ? "void-svg.html" : "void.html";
+
+        // クエリパラメータとしてスケッチファイル名を渡す
+        link.href = `${version}?sketch=${sketch.file}`;
         link.className = "sketch-item";
         link.innerHTML = `${sketch.name} <br> ${sketch.date}`;
         sketchLinks.appendChild(link);

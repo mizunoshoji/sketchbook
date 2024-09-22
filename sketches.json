@@ -2,6 +2,7 @@
   {
     "name": "Hydrangea-with-Bezier-Curves-1",
     "date": "2024-09-08",
-    "file": "Hydrangea-with-Bezier-Curves-1.js"
+    "file": "Hydrangea-with-Bezier-Curves-1.js",
+    "p5jsversion": "1.6.x"
   }
 ]
