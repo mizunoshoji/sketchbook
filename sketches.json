@@ -4,5 +4,11 @@
     "date": "2024-09-08",
     "file": "Hydrangea-with-Bezier-Curves-1.js",
     "p5jsversion": "1.6.x"
+  },
+  {
+    "name": "Hydrangea-with-Bezier-Curves-mono",
+    "date": "2024-09-23",
+    "file": "Hydrangea-with-Bezier-Curves-mono.js",
+    "p5jsversion": "1.6.x"
   }
 ]
