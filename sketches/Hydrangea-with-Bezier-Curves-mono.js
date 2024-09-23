@@ -1,16 +1,25 @@
 let radius, controlOffset, maxRadius, numShapes;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight, SVG); // SVGコンテキストで描画
+  // A3サイズのキャンバスを縦向きで作成
+  let a3Width = 841.89; // A3幅をピクセルに変換
+  let a3Height = 1190.55; // A3高さをピクセルに変換
+
+  createCanvas(a3Width, a3Height, SVG); // A3サイズでSVGキャンバスを作成
   initializeVariables(); // 変数の初期化
   drawShapes(); // シェイプを描画
+  // save("output.svg"); // ファイル名を指定してSVGを保存
+  // 保存ボタンを作成
+  saveButton = createButton("Save SVG");
+  saveButton.position(10, 10); // ボタンの位置を指定
+  saveButton.mousePressed(() => save("output.svg"));
 }
 
 function initializeVariables() {
   background(255); // 背景をリセット
   radius = windowWidth <= 600 ? 30 : 40; // 円の半径
   controlOffset = radius * 0.5; // 制御点のオフセット
-  maxRadius = max(width, height) / 3; // 描画領域の最大半径
+  maxRadius = min(width, height) / 2.5; // 描画領域の最大半径
   numShapes = windowWidth <= 600 ? 60 : 200; // シェイプの数
 
   stroke(0, 0, 0);
@@ -99,11 +108,16 @@ function drawPointAndText(x, y, r, g, b) {
   fill(180, 180, 180); // テキストも同じ色で表示
   noStroke();
   textStyle(NORMAL);
-  text(`(${round(x)}, ${round(y)})`, x + 5, y - 5); // 座標を表示
+  // text(`(${round(x)}, ${round(y)})`, x + 5, y - 5); // 座標を表示
 }
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight); // キャンバスサイズの変更
   initializeVariables(); // 再初期化
   drawShapes(); // 再描画
+}
+
+// SVG保存用の関数
+function saveSVG() {
+  save("output.svg"); // ファイル名を指定してSVGを保存
 }
