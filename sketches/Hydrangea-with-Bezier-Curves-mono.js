@@ -10,7 +10,8 @@ function initializeVariables() {
   background(255); // 背景をリセット
   radius = windowWidth <= 600 ? 30 : 40; // 円の半径
   controlOffset = radius * 0.5; // 制御点のオフセット
-  maxRadius = max(width, height) / 3; // 描画領域の最大半径
+  maxRadius =
+    windowWidth <= 600 ? max(width, height) / 3 : min(width, height) / 2.5; // 描画領域の最大半径
   numShapes = windowWidth <= 600 ? 60 : 200; // シェイプの数
 
   stroke(0, 0, 0);
