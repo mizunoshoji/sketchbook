@@ -22,5 +22,11 @@
     "date": "2024-10-14",
     "file": "Hydrangea-with-Bezier-Curves-A-Single-Petal.js",
     "p5jsversion": "1.6.x"
+  },
+  {
+    "name": "Hydrangea-with-Bezier-Curves-Process-Analysis",
+    "date": "2024-10-14",
+    "file": "Hydrangea-with-Bezier-Curves-Process-Analysis.js",
+    "p5jsversion": "1.6.x"
   }
 ]
