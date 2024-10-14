@@ -10,5 +10,11 @@
     "date": "2024-09-23",
     "file": "Hydrangea-with-Bezier-Curves-mono.js",
     "p5jsversion": "1.6.x"
+  },
+  {
+    "name": "Hydrangea-with-Bezier-Curves-A-Single-Flower-Mono",
+    "date": "2024-10-14",
+    "file": "Hydrangea-with-Bezier-Curves-A-Single-Flower-Mono.js",
+    "p5jsversion": "1.6.x"
   }
 ]
