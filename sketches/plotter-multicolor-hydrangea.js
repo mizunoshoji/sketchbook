@@ -1,6 +1,7 @@
 let shapeRadius, shapeCount;
 let layoutCircleRadius; // 配置範囲の円の半径
 let layoutCenters = []; // 配置範囲の円の中心座標
+let placementCircleRadius; // 正方形を配置するための円の半径
 let palette; // カラーパレット
 
 function setup() {
@@ -13,19 +14,20 @@ function setup() {
 function initializeSettings() {
   // 描画設定を初期化
   const canvasMinSize = min(width, height);
-  layoutCircleRadius = canvasMinSize / 2.5; // 各円の配置範囲の半径
-  shapeRadius = layoutCircleRadius / 8; // 図形のサイズ
-  shapeCount = floor(random(50, 101)); // ランダムな図形数
+  layoutCircleRadius = canvasMinSize / 4; // 各円の配置範囲の半径（初期値）
+  placementCircleRadius = canvasMinSize / 3; // 正方形を配置するための円の半径
+  shapeRadius = layoutCircleRadius / 10; // 図形のサイズ
   layoutCenters = []; // 配置円の中心リセット
 
-  // 配置円を固定値で設定（例：3つの円）
-  const numCircles = 4;
+  // 正方形を配置するための円周上の点を計算
+  const angleOffset = random(TWO_PI); // ランダムな回転
+  const numCenters = 4; // 正方形の4頂点を配置
 
-  for (let i = 0; i < numCircles; i++) {
-    layoutCenters.push({
-      x: random(layoutCircleRadius, width - layoutCircleRadius),
-      y: random(layoutCircleRadius, height - layoutCircleRadius),
-    });
+  for (let i = 0; i < numCenters; i++) {
+    const angle = angleOffset + i * HALF_PI; // 90度ごとに配置
+    const x = width / 2 + placementCircleRadius * cos(angle); // 円周上のX座標
+    const y = height / 2 + placementCircleRadius * sin(angle); // 円周上のY座標
+    layoutCenters.push({ x, y });
   }
 
   // カラーパレットの定義
@@ -44,6 +46,10 @@ function drawShapes() {
   const usedFillColors = [];
 
   layoutCenters.forEach((center) => {
+    // layoutCircleRadius をランダムに変更
+    const radiusFactor = random(0.7, 1.3);
+    const currentLayoutCircleRadius = layoutCircleRadius * radiusFactor;
+
     // 未使用の色を選択
     const availableFillColors = palette.filter(
       (color) => !usedFillColors.includes(color)
@@ -60,12 +66,15 @@ function drawShapes() {
     fill(fillColor);
     stroke(strokeColor);
 
+    // shapeCountをランダムに設定
+    const currentShapeCount = floor(random(60, 101));
+
     const positions = []; // 各円で配置された図形の座標リスト
-    for (let i = 0; i < shapeCount; i++) {
+    for (let i = 0; i < currentShapeCount; i++) {
       const newPosition = findValidPosition(
         center.x,
         center.y,
-        layoutCircleRadius,
+        currentLayoutCircleRadius, // 動的に変更された半径を使用
         positions
       );
       if (newPosition) {
@@ -74,6 +83,21 @@ function drawShapes() {
       }
     }
   });
+}
+
+function drawOverlayLines() {
+  // 線の色とスタイルを設定
+  stroke(palette[3]); // パレットの紫色
+  strokeWeight(4); // 線の太さ
+  noFill();
+
+  // 線の間隔
+  const lineSpacing = 5;
+
+  // 横方向に線を引いて塗りつぶす
+  for (let y = 0; y < height; y += lineSpacing) {
+    line(0, y, width, y);
+  }
 }
 
 function findValidPosition(centerX, centerY, maxRadius, positions) {
@@ -121,8 +145,8 @@ function drawCustomShape(x, y) {
   }
 
   // 中心の小円を描画
-  fill(color(0, 0, 255));
-  stroke(palette[3]);
+  fill(0, 0, 255);
+  stroke(palette[1]); // パレットの青色
   ellipse(0, 0, shapeRadius / 6); // 小円を描画
   pop();
 }
@@ -151,26 +175,4 @@ function drawBezierSegment() {
 
   bezierVertex(cx3, cy3, cx4, cy4, 0, 0);
   endShape(CLOSE);
-}
-
-function drawOverlayLines() {
-  // 線の色とスタイルを設定
-  stroke(palette[3]); // パレットの紫色
-  strokeWeight(4); // 線の太さ
-  noFill();
-
-  // 線の間隔
-  const lineSpacing = 5;
-
-  // 横方向に線を引いて塗りつぶす
-  for (let y = 0; y < height; y += lineSpacing) {
-    line(0, y, width, y);
-  }
-}
-
-function windowResized() {
-  // ウィンドウサイズ変更時の処理
-  resizeCanvas(windowWidth, windowHeight);
-  initializeSettings(); // 再初期化
-  drawShapes(); // 再描画
 }
