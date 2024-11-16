@@ -7,6 +7,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight, SVG); // SVGコンテキストのキャンバス
   initializeSettings(); // 初期設定
   drawShapes(); // 図形描画
+  drawOverlayLines(); // アジサイ描画後にフィルターとして線を描画
 }
 
 function initializeSettings() {
@@ -27,11 +28,11 @@ function initializeSettings() {
     });
   }
 
-  // カラーパレットの定義（20%透明度を下げる）
+  // カラーパレットの定義
   palette = [
-    color(255, 0, 255, 150), // ピンク
-    color(0, 153, 255, 150), // 青
-    color(255, 255, 51, 150), // 蛍光イエロー
+    color(255, 0, 191, 200), // ピンク
+    color(0, 153, 255, 200), // 青1
+    color(255, 255, 51, 200), // 蛍光イエロー
     color(153, 102, 255, 150), // 紫
   ];
 
@@ -120,7 +121,7 @@ function drawCustomShape(x, y) {
   }
 
   // 中心の小円を描画
-  fill(palette[1]);
+  fill(color(0, 0, 255));
   stroke(palette[3]);
   ellipse(0, 0, shapeRadius / 6); // 小円を描画
   pop();
@@ -150,6 +151,21 @@ function drawBezierSegment() {
 
   bezierVertex(cx3, cy3, cx4, cy4, 0, 0);
   endShape(CLOSE);
+}
+
+function drawOverlayLines() {
+  // 線の色とスタイルを設定
+  stroke(palette[3]); // パレットの紫色
+  strokeWeight(4); // 線の太さ
+  noFill();
+
+  // 線の間隔
+  const lineSpacing = 5;
+
+  // 横方向に線を引いて塗りつぶす
+  for (let y = 0; y < height; y += lineSpacing) {
+    line(0, y, width, y);
+  }
 }
 
 function windowResized() {
