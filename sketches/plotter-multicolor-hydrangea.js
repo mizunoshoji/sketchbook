@@ -24,14 +24,12 @@ function setup() {
 }
 
 function initializeSettings() {
-  // 描画設定を初期化
   const canvasMinSize = min(width, height);
-  layoutCircleRadius = canvasMinSize / 4.5; // 各円の配置範囲の半径（初期値）
+  layoutCircleRadius = canvasMinSize / 3; // 各円の配置範囲の半径（初期値）
   placementCircleRadius = canvasMinSize / 3; // 正方形を配置するための円の半径
   shapeRadius = layoutCircleRadius / 10; // 図形のサイズ
   layoutCenters = []; // 配置円の中心リセット
 
-  // 正方形を配置するための円周上の点を計算
   const angleOffset = random(TWO_PI); // ランダムな回転
   const numCenters = 4; // 正方形の4頂点を配置
 
@@ -42,12 +40,11 @@ function initializeSettings() {
     layoutCenters.push({ x, y });
   }
 
-  // カラーパレットの定義
   palette = [
-    color(255, 0, 191, 100), // ピンク
-    color(0, 153, 255, 100), // 青1
-    color(255, 255, 51, 100), // 蛍光イエロー
-    color(153, 102, 255, 100), // 紫
+    color(255, 0, 191, 200), // ピンク
+    color(0, 153, 255, 200), // 青1
+    color(255, 255, 51, 200), // 蛍光イエロー
+    color(153, 102, 255, 200), // 紫
   ];
 
   strokeWeight(1); // 線の太さ
@@ -68,9 +65,6 @@ function drawShapes() {
 
     const strokeColor = random(palette.filter((color) => color !== fillColor));
 
-    fill(fillColor);
-    stroke(strokeColor);
-
     const currentShapeCount = floor(random(60, 101));
     const positions = [];
 
@@ -83,29 +77,108 @@ function drawShapes() {
       );
       if (newPosition) {
         positions.push(newPosition);
+
+        // カスタム図形を描画（線のみ）
+        noFill();
+        stroke(strokeColor);
         drawCustomShape(newPosition.x, newPosition.y);
+
+        // カスタム図形を描画（塗りのみ、中心を少しずらす）
+        const offsetX = random(-shapeRadius / 4, shapeRadius / 4);
+        const offsetY = random(-shapeRadius / 4, shapeRadius / 4);
+        fill(fillColor);
+        noStroke();
+        drawCustomShape(newPosition.x + offsetX, newPosition.y + offsetY);
+
+        // 小円を描画（線のみ）
+        drawSmallCircle(
+          newPosition.x,
+          newPosition.y,
+          shapeRadius / 6,
+          null,
+          strokeColor
+        );
+
+        // 小円を描画（塗りのみ、中心を少しずらす）
+        drawSmallCircle(
+          newPosition.x + offsetX,
+          newPosition.y + offsetY,
+          shapeRadius / 6,
+          palette[1],
+          null
+        );
       }
     }
   });
 }
 
+function drawSmallCircle(x, y, radius, fillColor, strokeColor) {
+  push();
+  translate(x, y);
+
+  // 塗り設定
+  if (fillColor) fill(fillColor);
+  else noFill();
+
+  // 線設定
+  if (strokeColor) stroke(strokeColor);
+  else noStroke();
+
+  ellipse(0, 0, radius);
+
+  pop();
+}
+
 function drawOverlayLines() {
   push(); // 描画状態を保存
-
-  // パレットからランダムに色を選択
   const overlayColor = random(palette);
   stroke(overlayColor); // オーバーレイの線の色を設定
   strokeWeight(4); // 線の太さ
   noFill(); // 塗りなし
 
   const lineSpacing = 5; // 線の間隔
-
-  // 横方向に線を引いて塗りつぶす
   for (let y = 0; y < height; y += lineSpacing) {
     line(0, y, width, y); // 横線を描画
   }
-
   pop(); // 描画状態を元に戻す
+}
+
+function drawCustomShape(x, y) {
+  push();
+  translate(x, y);
+  rotate(random(TWO_PI));
+
+  for (let i = 0; i < 4; i++) {
+    push();
+    rotate(HALF_PI * i);
+    drawBezierSegment();
+    pop();
+  }
+  pop();
+}
+
+function drawBezierSegment() {
+  const offsetRange = shapeRadius * 0.2;
+
+  beginShape();
+  vertex(0, 0);
+
+  const cx1 = shapeRadius * 0.5 + random(-offsetRange, offsetRange);
+  const cy1 = random(-offsetRange, offsetRange);
+  const cx2 = shapeRadius + random(-offsetRange, offsetRange);
+  const cy2 = -shapeRadius * 0.5 + random(-offsetRange, offsetRange);
+  const x2 = shapeRadius + random(-offsetRange, offsetRange);
+  const y2 = shapeRadius * 0.5 + random(-offsetRange, offsetRange);
+
+  bezierVertex(cx1, cy1, cx2, cy2, x2, y2);
+
+  const cx3 = shapeRadius * 0.3 + random(-offsetRange, offsetRange);
+  const cy3 = shapeRadius * 1.2 + random(-offsetRange, offsetRange);
+  const cx4 = shapeRadius * 0.3 + random(-offsetRange, offsetRange);
+  const cy4 = shapeRadius * 0.4 + random(-offsetRange, offsetRange);
+
+  bezierVertex(cx3, cy3, cx4, cy4, 0, 0);
+  endShape(CLOSE);
 }
 
 function findValidPosition(centerX, centerY, maxRadius, positions) {
@@ -133,46 +206,4 @@ function isPositionValid(x, y, centerX, centerY, maxRadius, positions) {
     }
   }
   return true;
-}
-
-function drawCustomShape(x, y) {
-  push();
-  translate(x, y);
-  rotate(random(TWO_PI));
-
-  for (let i = 0; i < 4; i++) {
-    push();
-    rotate(HALF_PI * i);
-    drawBezierSegment();
-    pop();
-  }
-
-  fill(0, 0, 255);
-  stroke(palette[1]);
-  ellipse(0, 0, shapeRadius / 6);
-  pop();
-}
-
-function drawBezierSegment() {
-  const offsetRange = shapeRadius * 0.2;
-
-  beginShape();
-  vertex(0, 0);
-
-  const cx1 = shapeRadius * 0.5 + random(-offsetRange, offsetRange);
-  const cy1 = random(-offsetRange, offsetRange);
-  const cx2 = shapeRadius + random(-offsetRange, offsetRange);
-  const cy2 = -shapeRadius * 0.5 + random(-offsetRange, offsetRange);
-  const x2 = shapeRadius + random(-offsetRange, offsetRange);
-  const y2 = shapeRadius * 0.5 + random(-offsetRange, offsetRange);
-
-  bezierVertex(cx1, cy1, cx2, cy2, x2, y2);
-
-  const cx3 = shapeRadius * 0.3 + random(-offsetRange, offsetRange);
-  const cy3 = shapeRadius * 1.2 + random(-offsetRange, offsetRange);
-  const cx4 = shapeRadius * 0.3 + random(-offsetRange, offsetRange);
-  const cy4 = shapeRadius * 0.4 + random(-offsetRange, offsetRange);
-
-  bezierVertex(cx3, cy3, cx4, cy4, 0, 0);
-  endShape(CLOSE);
 }
