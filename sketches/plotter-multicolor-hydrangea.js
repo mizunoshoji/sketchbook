@@ -19,8 +19,8 @@ function setup() {
   );
 
   initializeSettings(); // 初期設定
+  drawOverlayLines(); // フィルターとして線を描画
   drawShapes(); // 図形描画
-  drawOverlayLines(); // 描画後にフィルターとして線を描画
 }
 
 function initializeSettings() {
@@ -44,10 +44,10 @@ function initializeSettings() {
 
   // カラーパレットの定義
   palette = [
-    color(255, 0, 191, 150), // ピンク
-    color(0, 153, 255, 150), // 青1
-    color(255, 255, 51, 150), // 蛍光イエロー
-    color(153, 102, 255, 150), // 紫
+    color(255, 0, 191, 100), // ピンク
+    color(0, 153, 255, 100), // 青1
+    color(255, 255, 51, 100), // 蛍光イエロー
+    color(153, 102, 255, 100), // 紫
   ];
 
   strokeWeight(1); // 線の太さ
