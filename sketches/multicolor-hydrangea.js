@@ -21,6 +21,13 @@ function setup() {
   initializeSettings(); // 初期設定
   drawOverlayLines(); // フィルターとして線を描画
   drawShapes(); // 図形描画
+  // 現在のUTCタイムスタンプを生成
+  let now = new Date();
+  let utcTimestamp = now.toISOString(); // UTCのISO 8601形式
+  console.log("UTC Timestamp:", utcTimestamp);
+
+  // タイムスタンプ描画関数を呼び出し
+  drawTimestamp(utcTimestamp);
 }
 
 function initializeSettings() {
@@ -205,4 +212,21 @@ function isPositionValid(x, y, centerX, centerY, maxRadius, positions) {
     }
   }
   return true;
+}
+
+function drawTimestamp(utcTimestamp) {
+  // タイムスタンプの色を動的に設定
+  let textColor;
+  if (overlayColor === palette[1] || overlayColor === palette[2]) {
+    textColor = color(255, 51, 0); // 赤
+  } else {
+    textColor = color(0, 0, 255); // 青
+  }
+
+  textFont("OCR-A"); // OCR-A を使用
+  noStroke();
+  fill(textColor); // 設定した色を使用
+  textSize(28);
+  textAlign(RIGHT, BOTTOM);
+  text(utcTimestamp, width - 10, height - 10);
 }
