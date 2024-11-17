@@ -78,26 +78,12 @@ function drawShapes() {
       if (newPosition) {
         positions.push(newPosition);
 
-        // カスタム図形を描画（線のみ）
-        noFill();
-        stroke(strokeColor);
-        drawCustomShape(newPosition.x, newPosition.y);
-
         // カスタム図形を描画（塗りのみ、中心を少しずらす）
         const offsetX = random(-shapeRadius / 4, shapeRadius / 4);
         const offsetY = random(-shapeRadius / 4, shapeRadius / 4);
         fill(fillColor);
         noStroke();
         drawCustomShape(newPosition.x + offsetX, newPosition.y + offsetY);
-
-        // 小円を描画（線のみ）
-        drawSmallCircle(
-          newPosition.x,
-          newPosition.y,
-          shapeRadius / 6,
-          null,
-          strokeColor
-        );
 
         // 小円を描画（塗りのみ、中心を少しずらす）
         drawSmallCircle(
@@ -106,6 +92,19 @@ function drawShapes() {
           shapeRadius / 6,
           palette[1],
           null
+        );
+        // カスタム図形を描画（線のみ）
+        noFill();
+        stroke(strokeColor);
+        drawCustomShape(newPosition.x, newPosition.y);
+
+        // 小円を描画（線のみ）
+        drawSmallCircle(
+          newPosition.x,
+          newPosition.y,
+          shapeRadius / 6,
+          null,
+          strokeColor
         );
       }
     }

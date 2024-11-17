@@ -42,9 +42,9 @@
     "p5jsversion": "1.6.x"
   },
   {
-    "name": "plotter-multicolor-hydrangea",
-    "date": "2024-11-04",
-    "file": "plotter-multicolor-hydrangea.js",
+    "name": "multicolor-hydrangea",
+    "date": "2024-11-17",
+    "file": "multicolor-hydrangea.js",
     "p5jsversion": "1.6.x"
   }
 ]
