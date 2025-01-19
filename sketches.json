@@ -46,5 +46,11 @@
     "date": "2024-11-17",
     "file": "multicolor-hydrangea.js",
     "p5jsversion": "1.6.x"
+  },
+  {
+    "name": "draw-lines",
+    "date": "2025-01-19",
+    "file": "draw-lines.js",
+    "p5jsversion": "1.6.x"
   }
 ]
