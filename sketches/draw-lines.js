@@ -1,5 +1,5 @@
 function setup() {
-  createCanvas(windowWidth, 4000);
+  createCanvas(windowWidth, 4000, SVG);
   background(255);
 
   // テキスト用スタイル
