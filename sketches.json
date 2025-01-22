@@ -52,5 +52,11 @@
     "date": "2025-01-19",
     "file": "draw-lines.js",
     "p5jsversion": "1.6.x"
+  },
+  {
+    "name": "2d-noise",
+    "date": "2025-01-19",
+    "file": "2d-noise.js",
+    "p5jsversion": "1.6.x"
   }
 ]
