@@ -1,22 +1,18 @@
-// 花クラス
+// Flowerクラス
 class Flower {
-  constructor(cx, cy) {
+  constructor(cx, cy, randomValue) {
     // 引数で受け取った座標に配置
     this.cx = cx;
     this.cy = cy;
+    this.random = randomValue;
 
     // ランダムな角度
     this.angle = random(TWO_PI);
 
-    // ランダムな大きさやノイズパラメータ
-    this.aMax = floor(random(30, 40));
-    this.patelHeight = floor(random(40, 50));
-    // this.noiseScale = random(0.01, 0.05);
-
-    // 総ライン数（4方向 × patelHeight）
+    // ランダムな大きさなど
+    this.aMax = this.random;
+    this.patelHeight = this.random * 1.4;
     this.totalLines = this.patelHeight * 4;
-
-    circle(this.cx, this.cy, floor(random(4, 6)));
   }
 
   // 一度にすべて描画（アニメーションなし）
@@ -28,40 +24,10 @@ class Flower {
       // 進捗 0~1
       let progress = lineIndex / this.patelHeight;
 
-      // ケース：A
-      // 幅をsinで滑らかに変化 (0→最大→0)
-      // let aCurrent = this.aMax * sin(Math.PI * progress) ** 2;
+      // 幅(例)：サイン波 + ノイズ
+      let noiseVal = noise(lineIndex * 0.02);
+      let aCurrent = this.aMax * sin(Math.PI * progress) ** 2 * noiseVal;
 
-      // ケース：B
-      // let base = aMax * sin(Math.PI * progress) ** 2;
-      // let randOffset = random(-10, 10); // -10~10の範囲でランダム
-      // let aCurrent = base + randOffset;
-
-      // ケース：C
-      // let randFactor = random(0.8, 1.2);
-      // let aCurrent = this.aMax * sin(Math.PI * progress) ** 2 * randFactor;
-
-      // ケース：D
-      // let noiseVal = noise(lineIndex * 0.01);
-      // let aCurrent = this.aMax * sin(Math.PI * progress) ** 2 * noiseVal;
-
-      // ケース：E
-      // let base1 = sin(Math.PI * progress);
-      // let base2 = sin(Math.PI * (progress * 2 + 0.3));
-      // // 周期違い or 位相ずれ
-      // let aCurrent = aMax * (base1 + 0.5 * base2);
-
-      //ケース：F
-      let base = sin(Math.PI * progress) ** 2;
-      let nVal = noise(lineIndex * 0.01);
-      let aCurrent = this.aMax * (base * nVal);
-
-      // 幅(例：sin² + ノイズ)
-      // let base = sin(Math.PI * progress) ** 2;
-      // let nVal = noise(lineIndex * this.noiseScale);
-      // let aCurrent = this.aMax * (base + 0.5 * nVal);
-
-      // 各フェーズ(上/右/下/左)ごとの軸
       let Ax, Ay, Bx, By, Cx, Cy;
       if (phaseIndex === 0) {
         // y軸マイナス (上)
@@ -98,10 +64,89 @@ class Flower {
       }
 
       push();
-      translate(this.cx, this.cy); // 花の中心
-      rotate(this.angle); // ランダムな角度
+      translate(this.cx, this.cy);
+      rotate(this.angle);
 
-      // 線を2本描く
+      line(Ax, Ay, Bx, By);
+      line(Ax, Ay, Cx, Cy);
+
+      pop();
+    }
+  }
+}
+
+// SmallFlowerクラス
+class SmallFlower {
+  constructor(cx, cy, randomValue) {
+    // 引数で受け取った座標に配置
+    this.cx = cx;
+    this.cy = cy;
+    this.random = randomValue / 4; // SmallFlowerは小さくするためサイズを半分に
+
+    // ランダムな角度
+    this.angle = random(TWO_PI);
+
+    // ランダムな大きさなど
+    this.aMax = this.random;
+    this.patelHeight = this.random * 1.4;
+    this.totalLines = this.patelHeight * 4;
+
+    // デバッグ用の円
+    circle(this.cx, this.cy, floor(random(2, 4)));
+  }
+
+  // 一度にすべて描画（アニメーションなし）
+  drawAllLines() {
+    for (let i = 0; i < this.totalLines; i++) {
+      let phaseIndex = floor(i / this.patelHeight);
+      let lineIndex = i % this.patelHeight;
+
+      // 進捗 0~1
+      let progress = lineIndex / this.patelHeight;
+
+      // 幅(例)：サイン波 + ノイズ
+      let noiseVal = noise(lineIndex * 0.02);
+      let aCurrent = this.aMax * sin(Math.PI * progress) ** 2 * noiseVal;
+
+      let Ax, Ay, Bx, By, Cx, Cy;
+      if (phaseIndex === 0) {
+        // y軸マイナス (上)
+        Ax = 0;
+        Ay = -lineIndex;
+        Bx = aCurrent;
+        By = Ay;
+        Cx = -aCurrent;
+        Cy = Ay;
+      } else if (phaseIndex === 1) {
+        // x軸プラス (右)
+        Ax = lineIndex;
+        Ay = 0;
+        Bx = Ax;
+        By = aCurrent;
+        Cx = Ax;
+        Cy = -aCurrent;
+      } else if (phaseIndex === 2) {
+        // y軸プラス (下)
+        Ax = 0;
+        Ay = lineIndex;
+        Bx = aCurrent;
+        By = Ay;
+        Cx = -aCurrent;
+        Cy = Ay;
+      } else {
+        // x軸マイナス (左)
+        Ax = -lineIndex;
+        Ay = 0;
+        Bx = Ax;
+        By = aCurrent;
+        Cx = Ax;
+        Cy = -aCurrent;
+      }
+
+      push();
+      translate(this.cx, this.cy);
+      rotate(this.angle);
+
       line(Ax, Ay, Bx, By);
       line(Ax, Ay, Cx, Cy);
 
@@ -112,12 +157,9 @@ class Flower {
 
 // 花の配列
 let flowers = [];
-// 10×10 のグリッド状に花を配置
 let gridRows = 10;
-let gridCols = 10;
-
-// 1マスの間隔
-let spacing = 50; // 適宜調整
+let gridCols = 8;
+let spacing = 50;
 
 function setup() {
   createCanvas(windowWidth, windowHeight, SVG);
@@ -125,27 +167,42 @@ function setup() {
   stroke(0);
   strokeWeight(1);
 
-  // キャンバス中央を基準に格子を敷く
   let centerX = width / 2;
   let centerY = height / 2;
 
-  // グリッド全体の幅・高さ
-  // たとえば「(gridCols - 1) * spacing」ぶん左右に敷くイメージ
-  let offsetX = centerX - ((gridCols - 1) * spacing) / 2;
-  let offsetY = centerY - ((gridRows - 1) * spacing) / 2;
+  // グリッドの中央インデックス
+  let midI = (gridRows - 1) * 0.5;
+  let midJ = (gridCols - 1) * 0.5;
 
-  // 各マスに花を配置
   for (let i = 0; i < gridRows; i++) {
     for (let j = 0; j < gridCols; j++) {
-      let fx = offsetX + j * spacing;
-      let fy = offsetY + i * spacing;
-      let noiseVal = floor(random(-20, 20));
-      fx = fx + noiseVal;
-      fy = fy + noiseVal;
+      // i, j から中心に対して相対値 (di, dj)
+      let di = i - midI;
+      let dj = j - midJ;
 
-      // Flowerインスタンスを( fx, fy )に配置
-      let f = new Flower(fx, fy);
+      // ダイヤモンド変換
+      let dx = dj - di;
+      let dy = di + dj;
+
+      // 菱形配置
+      let fx = centerX + dx * spacing;
+      // 縦方向は 0.5倍にして調整
+      let fy = centerY + dy * (spacing * 0.6);
+
+      // 少しランダムな揺らぎ
+      let noiseVal = random(-30, 30);
+      fx += noiseVal;
+      fy += noiseVal;
+
+      let randomValue = floor(random(30, 40));
+
+      // Flowerインスタンスを (fx, fy) に配置
+      let f = new Flower(fx, fy, randomValue);
       flowers.push(f);
+
+      // SmallFlowerインスタンスを同じ位置に配置
+      let sf = new SmallFlower(fx, fy, randomValue);
+      flowers.push(sf);
     }
   }
 
@@ -154,9 +211,9 @@ function setup() {
     f.drawAllLines();
   }
 
-  noLoop(); // 1度だけ描画
+  noLoop();
 }
 
 function draw() {
-  // ここでは特に描画しない（noLoopで停止）
+  // noLoop で停止
 }
