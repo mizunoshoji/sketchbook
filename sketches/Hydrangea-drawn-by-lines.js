@@ -9,9 +9,9 @@ class Flower {
     this.angle = random(TWO_PI);
 
     // ランダムな大きさやノイズパラメータ
-    this.aMax = 30;
-    this.patelHeight = 40;
-    this.noiseScale = random(0.01, 0.05);
+    this.aMax = floor(random(30, 40));
+    this.patelHeight = floor(random(40, 50));
+    // this.noiseScale = random(0.01, 0.05);
 
     // 総ライン数（4方向 × patelHeight）
     this.totalLines = this.patelHeight * 4;
@@ -30,7 +30,7 @@ class Flower {
 
       // ケース：A
       // 幅をsinで滑らかに変化 (0→最大→0)
-      // let aCurrent = aMax * sin(Math.PI * progress) ** 2;
+      // let aCurrent = this.aMax * sin(Math.PI * progress) ** 2;
 
       // ケース：B
       // let base = aMax * sin(Math.PI * progress) ** 2;
@@ -39,11 +39,11 @@ class Flower {
 
       // ケース：C
       // let randFactor = random(0.8, 1.2);
-      // let aCurrent = aMax * sin(Math.PI * progress) ** 2 * randFactor;
+      // let aCurrent = this.aMax * sin(Math.PI * progress) ** 2 * randFactor;
 
       // ケース：D
-      let noiseVal = noise(lineIndex * 0.01);
-      let aCurrent = this.aMax * sin(Math.PI * progress) ** 2 * noiseVal;
+      // let noiseVal = noise(lineIndex * 0.01);
+      // let aCurrent = this.aMax * sin(Math.PI * progress) ** 2 * noiseVal;
 
       // ケース：E
       // let base1 = sin(Math.PI * progress);
@@ -52,9 +52,9 @@ class Flower {
       // let aCurrent = aMax * (base1 + 0.5 * base2);
 
       //ケース：F
-      // let base = sin(Math.PI * progress);
-      // let nVal = noise(lineIndex * 0.03);
-      // let aCurrent = aMax * (base * nVal);
+      let base = sin(Math.PI * progress) ** 2;
+      let nVal = noise(lineIndex * 0.01);
+      let aCurrent = this.aMax * (base * nVal);
 
       // 幅(例：sin² + ノイズ)
       // let base = sin(Math.PI * progress) ** 2;
@@ -117,7 +117,7 @@ let gridRows = 10;
 let gridCols = 10;
 
 // 1マスの間隔
-let spacing = 60; // 適宜調整
+let spacing = 50; // 適宜調整
 
 function setup() {
   createCanvas(windowWidth, windowHeight, SVG);
@@ -139,7 +139,7 @@ function setup() {
     for (let j = 0; j < gridCols; j++) {
       let fx = offsetX + j * spacing;
       let fy = offsetY + i * spacing;
-      let noiseVal = floor(random(-10, 10));
+      let noiseVal = floor(random(-20, 20));
       fx = fx + noiseVal;
       fy = fy + noiseVal;
 
