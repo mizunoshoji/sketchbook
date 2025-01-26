@@ -58,5 +58,11 @@
     "date": "2025-01-19",
     "file": "2d-noise.js",
     "p5jsversion": "1.6.x"
+  },
+  {
+    "name": "Hydrangea-drawn-by-lines",
+    "date": "2025-01-26",
+    "file": "Hydrangea-drawn-by-lines.js",
+    "p5jsversion": "1.6.x"
   }
 ]
