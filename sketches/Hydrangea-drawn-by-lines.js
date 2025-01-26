@@ -1,69 +1,119 @@
-let a = 760; // 点Aのx座標
-let b = 500; // 点Aのy座標
-let c = 200; // x方向のオフセット
-let offsetDecrement = 1; // オフセットの減少量
-let yOffset = 0; // 初期のyオフセット
-let noiseOffset = 0; // パーリンノイズ用のオフセット
-let curveStep = 0; // 曲線の進行度
-let switchPoint = 100; // 変化の切り替え点（ループの途中）
-let incrementBase = 0.5; // 基本の増加量
-let incrementMax = 2; // 最大の増加量
-let phase = 1; // 描画のフェーズ（1: 上向き、-1: 下向き）
+// グローバル変数
+let a = 760;
+let b = 500;
+let c = 200;
+let offsetDecrement = 1;
+let yOffset = 0;
+let phase = 1;
+let switchPoint;
+let incrementBase = 0.5;
+let incrementMax = 2;
 
 function setup() {
   createCanvas(windowWidth, windowHeight, SVG);
-  background(255); // 背景を白に設定
-  stroke(0); // 線の色を黒に設定
-  strokeWeight(1); // 線の太さを設定
-  frameRate(30);
+  background(255);
+  stroke(0);
+  strokeWeight(1);
+  frameRate(60);
+
+  // ランダムなスイッチポイントを初期化
+  switchPoint = 100 + random(-40, 40);
 }
 
 function draw() {
-  if (c > 0 || (phase === -1 && yOffset <= switchPoint)) {
-    // オフセットが0より大きい場合のみ描画
-    // 点A
+  drawPatel();
+}
+
+function drawPatel() {
+  // フェーズによって別の描画関数を呼び出す
+  if (phase === 1) {
+    drawPetalPhase1();
+  } else if (phase === -1) {
+    drawPetalPhase2();
+  } else {
+    noLoop(); // 全工程終了
+  }
+}
+
+function drawPetalPhase1() {
+  if (c > 0) {
     let Ax = a;
-    let Ay = b + yOffset * phase; // フェーズに応じて方向を変える
+    let Ay = b + yOffset;
+    let Bx = a + c;
+    let By = b + yOffset;
+    let Cx = a - c;
+    let Cy = b + yOffset;
 
-    // 点B
-    let Bx = a + c * 0.9;
-    let By = b + yOffset * phase;
-
-    // 点C
-    let Cx = a - c * 1.3;
-    let Cy = b + yOffset * phase;
-
-    // 点Aから点Bへの線を描画
     line(Ax, Ay, Bx, By);
-
-    // 点Aから点Cへの線を描画
     line(Ax, Ay, Cx, Cy);
 
-    // x方向のオフセットを減少させる
-    c = max(0, c - offsetDecrement); // オフセットが負にならないようにする
+    // フェーズ1の減少量に倍掛け
+    offsetDecrement *= 2;
 
-    // 増加量がyOffsetに応じて大きくなるように設定
-    let dynamicIncrement = incrementBase + abs(yOffset) / 200; // yOffsetの絶対値に基づいて増加
+    c = max(0, c - offsetDecrement);
 
-    // 最大増加量もyOffsetに応じて大きくなるように設定
-    incrementMax = 2 + abs(yOffset) / 100; // 最大値を動的に変化させる
+    let dynamicIncrement = incrementBase + abs(yOffset) / 250;
+    incrementMax = 2 + abs(yOffset) / 200;
+    let transitionFactor = constrain((abs(yOffset) - switchPoint) / 50, 0, 1);
 
-    // 減少量の切り替えをなめらかに
-    let transitionFactor = constrain((abs(yOffset) - switchPoint) / 50, 0, 1); // 0から1への変化
-    offsetDecrement = lerp(dynamicIncrement, incrementMax, transitionFactor); // 初期はdynamicIncrement、徐々にincrementMaxへ変化
+    // 下限を0.2にして0にならないようにする
+    offsetDecrement = lerp(dynamicIncrement, incrementMax, transitionFactor);
+    offsetDecrement *= random(0.2, 1);
 
-    // 次のyオフセットに進む
     yOffset++;
 
-    // 上向き描画が終了したら下向きに切り替え
-    if (c === 0 && phase === 1) {
-      phase = -1; // 下向きに切り替え
-      c = 200; // オフセットをリセット
-      yOffset = 1; // yOffsetをリセット
-      offsetDecrement = 1; // 減少量をリセット
-      stroke(255, 0, 0);
+    if (c === 0) {
+      phase = -1;
+      c = 200;
+      yOffset = 1;
+      offsetDecrement = 1;
+      switchPoint = 100 + random(-40, 40);
+      offsetDecrement *= 2;
+      stroke(0, 0, 0);
     }
   } else {
-    noLoop(); // アニメーション終了
+    phase = -1;
+  }
+}
+
+function drawPetalPhase2() {
+  // フェーズ2用一時変数（最後の座標取得用）
+  let Ax, Ay, Bx, By, Cx, Cy;
+  // yOffset <= switchPoint を外し、cが0になるまで描画する
+  if (c > 0) {
+    let Ax = a;
+    let Ay = b + yOffset * phase;
+    let Bx = a + c;
+    let By = b + yOffset * phase;
+    let Cx = a - c;
+    let Cy = b + yOffset * phase;
+
+    line(Ax, Ay, Bx, By);
+    line(Ax, Ay, Cx, Cy);
+
+    // x方向のオフセットを減少
+    c = max(0, c - offsetDecrement);
+
+    let dynamicIncrement = incrementBase + abs(yOffset) / 250;
+    incrementMax = 2 + abs(yOffset) / 200;
+    let transitionFactor = constrain((abs(yOffset) - switchPoint) / 50, 0, 1);
+
+    offsetDecrement = lerp(dynamicIncrement, incrementMax, transitionFactor);
+    offsetDecrement *= random(0.2, 1); // 下向きも0にならないように
+
+    yOffset++;
+  } else {
+    // フェーズ2終了 → 直前の座標を最終として扱う
+    // ここで最終座標を計算してログを出力
+    Ax = a;
+    Ay = b + yOffset * phase;
+    Bx = a + c;
+    By = b + yOffset * phase;
+    Cx = a - c;
+    Cy = b + yOffset * phase;
+
+    console.log("フェーズ2最終座標:", { Ax, Ay, Bx, By, Cx, Cy });
+    // フェーズ2終了
+    phase = 0;
   }
 }
