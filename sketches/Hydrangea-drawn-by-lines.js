@@ -29,7 +29,7 @@ function draw() {
     let By = b + yOffset;
 
     // 点C
-    let Cx = a - c;
+    let Cx = a - c * 1.3;
     let Cy = b + yOffset;
 
     // 点Aから点Bへの線を描画
