@@ -5,6 +5,9 @@ let offsetDecrement = 1; // オフセットの減少量
 let yOffset = 0; // 初期のyオフセット
 let noiseOffset = 0; // パーリンノイズ用のオフセット
 let curveStep = 0; // 曲線の進行度
+let switchPoint = 100; // 変化の切り替え点（ループの途中）
+let incrementBase = 0.5; // 基本の増加量
+let incrementMax = 2; // 最大の増加量
 
 function setup() {
   createCanvas(windowWidth, windowHeight, SVG);
@@ -38,24 +41,15 @@ function draw() {
     // x方向のオフセットを減少させる
     c = max(0, c - offsetDecrement); // オフセットが負にならないようにする
 
-    // x方向オフセットの減らし方=曲線の決まり方
+    // 増加量がyOffsetに応じて大きくなるように設定
+    let dynamicIncrement = incrementBase + yOffset / 200; // yOffsetに基づいて増加
 
-    // 減少量をなめらかな山形の曲線で変化させる
-    // offsetDecrement = 1 + sin(curveStep) * 2; // サインカーブを使用して変化
-    // curveStep += 0.05; // カーブの進行速度
+    // 最大増加量もyOffsetに応じて大きくなるように設定
+    incrementMax = 2 + yOffset / 100; // 最大値を動的に変化させる
 
-    // offsetDecrement += 0.05; // 増加率を設定
-
-    // 減少量をループごとに大きくする
-    offsetDecrement *= 1.02; // 増加率を設定
-
-    // 減少量を「多い->少ない->多い」となめらかに変化させる
-    // offsetDecrement = 1 + abs(sin(curveStep)) * 2; // 絶対値を取ることで周期的に増減
-    // curveStep += 0.03; // カーブの進行速度
-
-    // // 減少量をなめらかに変化させる
-    // offsetDecrement = 1 + noise(noiseOffset) * 2; // パーリンノイズで動的変化
-    // noiseOffset += 0.1; // ノイズのオフセットを増加
+    // 減少量の切り替えをなめらかに
+    let transitionFactor = constrain((yOffset - switchPoint) / 50, 0, 1); // 0から1への変化
+    offsetDecrement = lerp(dynamicIncrement, incrementMax, transitionFactor); // 初期はdynamicIncrement、徐々にincrementMaxへ変化
 
     // 次のyオフセットに進む
     yOffset++;
