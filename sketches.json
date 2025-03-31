@@ -64,5 +64,11 @@
     "date": "2025-01-26",
     "file": "Hydrangea-drawn-by-lines.js",
     "p5jsversion": "1.6.x"
+  },
+  {
+    "name": "lotus",
+    "date": "2025-02-24",
+    "file": "lotus.js",
+    "p5jsversion": "1.6.x"
   }
 ]
