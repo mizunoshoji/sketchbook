@@ -70,5 +70,11 @@
     "date": "2025-02-24",
     "file": "lotus.js",
     "p5jsversion": "1.6.x"
+  },
+  {
+    "name": "千の桜花",
+    "date": "2025-04-06",
+    "file": "sakuraPetals1000.js",
+    "p5jsversion": "1.6.x"
   }
 ]
