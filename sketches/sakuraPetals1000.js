@@ -1,11 +1,13 @@
 function setup() {
   document.body.style.backgroundColor = "#000000";
-  let margin = 50;
-  let size = min(windowWidth, windowHeight) - 2 * margin;
-  let canvas = createCanvas(size, size, SVG);
-  canvas.position((windowWidth - size) / 2, (windowHeight - size) / 2);
+  let margin = 30;
+  let canvasWidth = windowWidth - 2 * margin;
+  let canvasHeight = windowHeight - 2 * margin;
+  let canvas = createCanvas(canvasWidth, canvasHeight, SVG);
+  canvas.position(margin, margin);
   strokeWeight(1);
   background(255, 255, 255);
+
   let sakuraPetals = 1000;
   for (let i = 0; i < sakuraPetals; i++) {
     let rx = random(width);
@@ -23,33 +25,33 @@ function setup() {
   textAlign(LEFT, TOP);
 
   let codeText = `
-  let sakuraPetals = 1000;
-  for (let i = 0; i < sakuraPetals; i++) {
-  　let rx = random(width);
-  　let ry = random(height);
-  　push();
-  　translate(rx, ry);
-  　rotate(random(TWO_PI));
-  　drawSakuraPetal();
-  　pop();
-  }`;
+let sakuraPetals = 1000;
+for (let i = 0; i < sakuraPetals; i++) {
+　let rx = random(width);
+　let ry = random(height);
+　push();
+　translate(rx, ry);
+　rotate(random(TWO_PI));
+　drawSakuraPetal();
+　pop();
+}`;
+
+  // 前後の空行を除去して、各行に分割
   let lines = codeText.trim().split("\n");
-  let yOffset = 10;
-  let xOffset = 10;
-  let padding = 0;
+  let yOffset = 10; // 上からの開始位置
+  let xOffset = 10; // 左側の余白
   let lineHeight = textLeading();
+  let padding = 0; // 余白なしでテキスト幅に一致させる
 
   for (let i = 0; i < lines.length; i++) {
     let line = lines[i];
     let w = textWidth(line);
-    fill(0, 0, 255, 150);
+    // テキスト幅に合わせた背景の四角形を描画
+    fill(0, 0, 255); // 青色の背景
     noStroke();
-    rect(
-      xOffset - padding,
-      yOffset + i * lineHeight,
-      w + padding * 2,
-      lineHeight
-    );
+    rect(xOffset, yOffset + i * lineHeight, w + padding * 2, lineHeight);
+
+    // テキストは白色で描画
     fill(255);
     text(line, xOffset, yOffset + i * lineHeight);
   }
