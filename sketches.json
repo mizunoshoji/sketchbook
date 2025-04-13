@@ -72,9 +72,15 @@
     "p5jsversion": "1.6.x"
   },
   {
-    "name": "千の桜花",
+    "name": "千の桜の花びら",
     "date": "2025-04-06",
     "file": "sakuraPetals1000.js",
+    "p5jsversion": "1.6.x"
+  },
+  {
+    "name": "千の桜の花びら(アニメーション)",
+    "date": "2025-04-13",
+    "file": "sakuraPetals1000-animated.js",
     "p5jsversion": "1.6.x"
   }
 ]
