@@ -145,12 +145,18 @@ function evanesceSakuraPetal() {
 }
 
 function createCodeOverlay(codeText, x, y) {
-  let codeDiv = createDiv(codeText);
-  codeDiv.style("font-family", "monospace");
-  codeDiv.style("font-size", "16px");
-  codeDiv.style("color", "#ffffff");
-  codeDiv.style("background-color", "#0000ff99");
-  codeDiv.style("padding", "10px");
+  let codeDiv = createDiv("");
+  let codeSpan = createSpan(codeText);
+  codeSpan.style("font-family", "monospace");
+  codeSpan.style("font-size", "16px");
+  codeSpan.style("color", "#ffffff");
+  codeSpan.style("background-color", "#0000ff99");
+  codeSpan.style("padding", "0px");
+  codeSpan.style("box-decoration-break", "clone");
+  codeSpan.style("-webkit-box-decoration-break", "clone");
+
+  codeDiv.child(codeSpan);
+  codeDiv.style("display", "inline-block");
   codeDiv.style("position", "absolute");
   codeDiv.style("z-index", "1000");
   codeDiv.style("white-space", "pre");
