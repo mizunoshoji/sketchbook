@@ -82,5 +82,11 @@
     "date": "2025-04-13",
     "file": "sakuraPetals1000-animated.js",
     "p5jsversion": "1.6.x"
+  },
+  {
+    "name": "桜の花びら マルチウィンドウ スタティック ワイヤーフレーム",
+    "date": "2025-04-19",
+    "file": "sakura-petals-multi-window-static-wireframe.js",
+    "p5jsversion": "1.6.x"
   }
 ]
