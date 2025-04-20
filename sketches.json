@@ -84,9 +84,9 @@
     "p5jsversion": "1.6.x"
   },
   {
-    "name": "桜の花びら マルチウィンドウ スタティック ワイヤーフレーム",
+    "name": "桜の花びら-マルチウィンドウ-ワイヤーフレーム",
     "date": "2025-04-19",
-    "file": "sakura-petals-multi-window-static-wireframe.js",
+    "file": "sakura-petals-multi-window-wireframe.js",
     "p5jsversion": "1.6.x"
   }
 ]
