@@ -1,7 +1,7 @@
 // 定数定義
 const numCanvases = 4; // 枠の数
 const minSize = 100; // 枠の最小サイズ
-const margin = 30; // 画面端からの余白
+const margin = 8; // 画面端からの余白
 const padding = 20; // 枠内の余白
 const palette = ["rgb(255,255,255)", "rgb(203, 203, 203)", "rgb(0, 0, 0)"];
 // 花びら枚数カテゴリ
@@ -27,16 +27,23 @@ new p5((p) => {
     svgEl.appendChild(defs); // <defs>追加
 
     for (let i = 0; i < numCanvases; i++) {
-      // 1. サイズ＆位置計算
-      const w =
-        p.floor(p.random(window.innerWidth - minSize - 2 * margin)) + minSize;
-      const h =
-        p.floor(p.random(window.innerHeight - minSize - 2 * margin)) + minSize;
-      const x = margin + p.random(window.innerWidth - w - 2 * margin);
-      const y = margin + p.random(window.innerHeight - h - 2 * margin);
+      // 1. サイズ＆位置計算（外枠込みで収まるように）
+      const maxInnerW = window.innerWidth - margin * 2 - padding * 2;
+      const maxInnerH = window.innerHeight - margin * 2 - padding * 2;
 
+      // 内枠サイズをランダムに決定
+      const w = p.floor(p.random(minSize, maxInnerW));
+      const h = p.floor(p.random(minSize, maxInnerH));
+
+      // 外枠サイズ
       const outerW = w + padding * 2;
       const outerH = h + padding * 2;
+
+      // 外枠の左上位置をランダムに（必ず画面内に収まる）
+      const x = p.random(margin, window.innerWidth - outerW - margin);
+      const y = p.random(margin, window.innerHeight - outerH - margin);
+
+      // 内枠の左上位置
       const innerX = x + padding;
       const innerY = y + padding;
 
